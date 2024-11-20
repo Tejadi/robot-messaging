@@ -11,7 +11,7 @@
 
 std::atomic<bool> running(true);
 
-void udp_receive(const std::string& host, int port) {
+void receive(const std::string& host, int port) {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) {
         perror("Error creating socket");
@@ -58,7 +58,7 @@ void udp_receive(const std::string& host, int port) {
     close(sockfd);
 }
 
-void udp_send(const std::string& target_ip, int port) {
+void send(const std::string& target_ip, int port) {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) {
         perror("Error creating socket");
@@ -101,9 +101,9 @@ int main() {
     std::cout << "Enter the target computer's IP address: ";
     std::getline(std::cin, target_ip);
 
-    std::thread receiver_thread(udp_receive, "0.0.0.0", port);
+    std::thread receiver_thread(receive, "0.0.0.0", port);
 
-    udp_send(target_ip, port);
+    send(target_ip, port);
 
     receiver_thread.join();
 
