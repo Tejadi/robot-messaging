@@ -101,11 +101,11 @@ int main() {
     std::cout << "Enter the target computer's IP address: ";
     std::getline(std::cin, target_ip);
 
-    // std::thread receiver_thread(receiver, std::string("138.16.161.143"), port);
+    std::thread receiver_thread(receiver, std::string("x.x.x.x"), port);
 
     sender(target_ip, port);
 
-    // receiver_thread.join();
+    receiver_thread.join();
 
     return 0;
 }
