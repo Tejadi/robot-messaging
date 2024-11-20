@@ -11,7 +11,7 @@
 
 std::atomic<bool> running(true);
 
-void receive(const std::string& host, int port) {
+void receiver(const std::string& host, int port) {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) {
         perror("Error creating socket");
@@ -58,7 +58,7 @@ void receive(const std::string& host, int port) {
     close(sockfd);
 }
 
-void send(const std::string& target_ip, int port) {
+void sender(const std::string& target_ip, int port) {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) {
         perror("Error creating socket");
@@ -101,11 +101,11 @@ int main() {
     std::cout << "Enter the target computer's IP address: ";
     std::getline(std::cin, target_ip);
 
-    std::thread receiver_thread(receive, "0.0.0.0", port);
+    // std::thread receiver_thread(receiver, std::string("138.16.161.143"), port);
 
-    send(target_ip, port);
+    sender(target_ip, port);
 
-    receiver_thread.join();
+    // receiver_thread.join();
 
     return 0;
 }
