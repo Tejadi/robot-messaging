@@ -11,7 +11,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
+#include <chrono>
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
 std::string ID = "1";
 
@@ -19,8 +22,15 @@ std::string ID = "1";
 std::atomic<bool> running(true);
 
 std::string computerMsg() {
+
+    auto right_now = std::chrono::system_clock::now();
+    std::time_t current_time = std::chrono::system_clock::to_time_t(right_now);
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&current_time), "%Y-%m-%d %H:%M:%S");
+
+    std::string msg = ss.str();
+
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    std::string msg = "Hello my name is " + ID;
     return msg;
 }
 
@@ -65,9 +75,7 @@ void receiver(const std::string& host, int port, std::string my_own_ip) {
         std::string data(msg);
         std::string sender_ip = inet_ntoa(clientaddr.sin_addr);
 
-        // Check if the sender is myself
         if (sender_ip == my_own_ip) {
-            // This message originated from me, ignore it
             continue;
         }
 
